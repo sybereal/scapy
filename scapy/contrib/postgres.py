@@ -229,7 +229,7 @@ class Query(_ZeroPadding):
     fields_desc = [
         ByteTagField(b"Q"),
         FieldLenField(
-            "len", None, length_of="query", fmt="I", adjust=lambda pkt, x: x + 5
+            "len", None, length_of="query", fmt="I", adjust=lambda pkt, x: x + 4
         ),
         StrNullField("query", None),
     ]
