@@ -350,6 +350,50 @@ class LDAP_SearchResponseResultCode(ASN1_Packet):
     ASN1_root = LDAPResult
 
 
+class LDAP_Attribute(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_SEQUENCE(
+        AttributeType("type", ""),
+        ASN1F_SET_OF("values", [], AttributeValue),
+    )
+
+
+class LDAP_ModifyRequestChange(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_SEQUENCE(
+        ASN1F_ENUMERATED("operation", 0, {0: "add",
+                                          1: "delete",
+                                          2: "replace"}),
+        ASN1F_PACKET("modification", LDAP_Attribute(), LDAP_Attribute),
+    )
+
+
+class LDAP_ModifyRequest(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_SEQUENCE(
+        LDAPDN("object", ""),
+        ASN1F_SEQUENCE_OF("changes", [], LDAP_ModifyRequestChange),
+    )
+
+
+class LDAP_ModifyResponse(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = LDAPResult
+
+
+class LDAP_AddRequest(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_SEQUENCE(
+        LDAPDN("entry", ""),
+        ASN1F_SEQUENCE_OF("attributes", [], LDAP_Attribute),
+    )
+
+
+class LDAP_AddResponse(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = LDAPResult
+
+
 class LDAP_AbandonRequest(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_INTEGER("messageID", 0)
@@ -403,6 +447,22 @@ class LDAP(ASN1_Packet):
                                   LDAP_SearchResponseResultCode(),
                                   LDAP_SearchResponseResultCode,
                                   implicit_tag=0x65),
+                     ASN1F_PACKET("modifyRequest",
+                                  LDAP_ModifyRequest(),
+                                  LDAP_ModifyRequest,
+                                  implicit_tag=0x66),
+                     ASN1F_PACKET("modifyResponse",
+                                  LDAP_ModifyResponse(),
+                                  LDAP_ModifyResponse,
+                                  implicit_tag=0x67),
+                     ASN1F_PACKET("addRequest",
+                                  LDAP_AddRequest(),
+                                  LDAP_AddRequest,
+                                  implicit_tag=0x68),
+                     ASN1F_PACKET("addResponse",
+                                  LDAP_AddResponse(),
+                                  LDAP_AddResponse,
+                                  implicit_tag=0x69),
                      ASN1F_PACKET("abandonRequest",
                                   LDAP_AbandonRequest(),
                                   LDAP_AbandonRequest,
