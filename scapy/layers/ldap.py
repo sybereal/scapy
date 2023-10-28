@@ -471,7 +471,7 @@ class LDAP(ASN1_Packet):
         # LDAP v3 only
         ASN1F_optional(
             ASN1F_SEQUENCE_OF("Controls", [], LDAP_Control,
-                              implicit_tag=0x0)
+                              implicit_tag=0xa0)
         )
     )
 
