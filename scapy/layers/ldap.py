@@ -110,10 +110,10 @@ LDAPResult = ASN1F_SEQUENCE(
 
 class ASN1_Class_LDAP_Authentication(ASN1_Class_UNIVERSAL):
     name = "LDAP Authentication"
-    simple = 0xa0
-    krbv42LDAP = 0xa1
-    krbv42DSA = 0xa2
-    sasl = 0xa3
+    simple = 0x80
+    krbv42LDAP = 0x81
+    krbv42DSA = 0x82
+    sasl = 0x83
 
 
 class ASN1_LDAP_Authentication_simple(ASN1_STRING):
